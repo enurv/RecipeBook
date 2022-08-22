@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthResponseData, AuthService } from "./auth.service";
 
@@ -12,14 +13,17 @@ export class AuthComponent {
     isLoading: boolean = false;
     error: string = null;
 
-    constructor(private authService: AuthService) {}
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ) {}
 
     onSwichMode() {
         this.isLoginMode = !this.isLoginMode;
     }
 
     onSubmit(form: NgForm) {
-        if (!form.valid) {
+        if (!form.valid) { //* adds extra security in case of the user hacks their way in to click that button with developer tools
             return;
         }
         const email = form.value.email;
@@ -36,8 +40,9 @@ export class AuthComponent {
 
         authObs.subscribe(
             resData => {
-                this.isLoading = false;
                 console.log(resData);
+                this.isLoading = false;
+                this.router.navigate(['/recipes']);
             }, errorMessage => {
                 console.log(errorMessage);
                 this.error = errorMessage;
