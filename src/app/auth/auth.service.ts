@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
+import { environment } from "src/environments/environment";
 import { User } from "./user.model";
 
 export interface AuthResponseData {
@@ -19,7 +20,6 @@ export class AuthService {
 
     private signUpURL: string = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp';
     private signInURL: string = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword';
-    private WebAPIKey: string = 'AIzaSyBeDTste8nbnoScdQx6yK652AxPxivrX0Q';
 
     user = new BehaviorSubject<User>(null);
     private tokenExpirationTimer: any;
@@ -38,16 +38,16 @@ export class AuthService {
                 returnSecureToken: true
             },
             {
-                params: new HttpParams().set('key', this.WebAPIKey)
+                params: new HttpParams().set('key', environment.firebaseAPIKey)
             }
         )
         .pipe(
             catchError(this.handleError),
             tap(resData => {
                 this.handleAuthentication(
-                    resData.email, 
-                    resData.localId, 
-                    resData.idToken, 
+                    resData.email,
+                    resData.localId,
+                    resData.idToken,
                     +resData.expiresIn);
             })
         );
@@ -62,16 +62,16 @@ export class AuthService {
                 returnSecureToken: true
             },
             {
-                params: new HttpParams().set('key', this.WebAPIKey)
+                params: new HttpParams().set('key', environment.firebaseAPIKey)
             }
         )
         .pipe(
             catchError(this.handleError),
             tap(resData => {
                 this.handleAuthentication(
-                    resData.email, 
-                    resData.localId, 
-                    resData.idToken, 
+                    resData.email,
+                    resData.localId,
+                    resData.idToken,
                     +resData.expiresIn);
             })
         );
@@ -131,7 +131,7 @@ export class AuthService {
             return throwError(errorMessage);
         }
         switch (errorRes.error.error.message) {
-            case 'EMAIL_EXISTS': 
+            case 'EMAIL_EXISTS':
                 errorMessage = 'This email exists already.';
                 break;
             case 'EMAIL_NOT_FOUND':
