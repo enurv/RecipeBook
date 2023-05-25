@@ -30,6 +30,8 @@ chrome-profiler-events*.json
 !.vscode/extensions.json
 .history/*
 
+
+
 # misc
 /.angular/cache
 /.sass-cache
@@ -48,6 +50,6 @@ Thumbs.db
 #Deployment related files
 .firebaserc
 firebase.json
-.firebase
+/.firebase
 
 /src/environments
