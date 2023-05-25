@@ -48,5 +48,6 @@ Thumbs.db
 #Deployment related files
 .firebaserc
 firebase.json
+.firebase
 
 /src/environments
